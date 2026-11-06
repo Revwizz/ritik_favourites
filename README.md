@@ -1,27 +1,12 @@
-## Devvit React Starter
+# Reddit Favourites (Devvit)
 
-A starter to build web applications on Reddit's developer platform
+Live app (public Reddit post): https://www.reddit.com/r/ritik_favourites_demo/comments/YOUR_POST_ID/
+Code on GitHub: https://github.com/Revwizz/ritik_favourites
 
-- [Devvit](https://developers.reddit.com/): A way to build and deploy immersive games on Reddit
-- [Vite](https://vite.dev/): For compiling the webView
-- [React](https://react.dev/): For UI
-- [Hono](https://hono.dev/): For backend logic
-- [Tailwind](https://tailwindcss.com/): For styles
-- [TypeScript](https://www.typescriptlang.org/): For type safety
+A Devvit app (React + TypeScript) that shows the top 10 hot posts of any subreddit,
+lets the user favourite posts, and stores only the post IDs in localStorage
+(Web Storage API). All post data comes from the Reddit API through Devvit's Reddit
+client, as instructed by Prof. Baig. The Devvit server routes only read from Reddit;
+they store nothing.
 
-## Getting Started
-
-> Make sure you have Node 22 downloaded on your machine before running!
-
-1. Run `npm create devvit@latest --template=react`
-2. Go through the installation wizard. You will need to create a Reddit account and connect it to Reddit developers
-3. Copy the command on the success page into your terminal
-
-## Commands
-
-- `npm run dev`: Starts a development server where you can develop your application live on Reddit.
-- `npm run build`: Builds your client and server projects
-- `npm run deploy`: Uploads a new version of your app
-- `npm run launch`: Publishes your app for review
-- `npm run login`: Logs your CLI into Reddit
-- `npm run type-check`: Type checks, lints, and prettifies your app
+Run it: npm install, npm run login, then npm run dev

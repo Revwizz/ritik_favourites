@@ -1,12 +1,11 @@
 /*
  * FILE          : SubredditPosts.tsx
- * PROJECT       : Advanced Web Frameworks - Reddit Favourites (Devvit)
+ * PROJECT       : Advanced Web Frameworks - Reddit Favourites
  * PROGRAMMER    : Ritik Vyas
  * FIRST VERSION : 2026-11-05
  * DESCRIPTION   :
- *   Loads and lists the top hot posts of the chosen subreddit (Requirement 1)
- *   with a button on each to add or remove it from the favourites
- *   (Requirement 2).
+ *   Loads and lists the top hot posts of the chosen subreddit
+ *   with a button on each to add or remove it from the favourites.
  */
 
 import { useEffect, useState } from 'react';

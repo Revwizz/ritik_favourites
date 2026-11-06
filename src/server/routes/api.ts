@@ -1,14 +1,14 @@
 /*
  * FILE          : api.ts (src/server/routes)
- * PROJECT       : Advanced Web Frameworks - Reddit Favourites (Devvit)
+ * PROJECT       : Advanced Web Frameworks - Reddit Favourites
  * PROGRAMMER    : Ritik Vyas
  * FIRST VERSION : 2026-11-05
  * DESCRIPTION   :
  *   The server endpoints called by the React client. They run on Devvit's
  *   server and read post data from the Reddit API through Devvit's Reddit
  *   client. They only read from Reddit; nothing is stored on the server.
- *     GET /api/hot/:subreddit   - top hot posts of a subreddit (Requirement 1)
- *     GET /api/posts?ids=...    - current data for saved post IDs (Requirement 3)
+ *     GET /api/hot/:subreddit   - top hot posts of a subreddit
+ *     GET /api/posts?ids=...    - current data for saved post IDs
  */
 
 import { Hono } from 'hono';
@@ -39,7 +39,7 @@ export const api = new Hono();
 //   Checks that a string is a valid Reddit post ID, so only well-formed IDs
 //   are sent to the Reddit API.
 // PARAMETERS    :
-//   string id : the value to check, e.g. "t3_1abc2de"
+//   string id : the value to check
 // RETURNS       :
 //   boolean : true if id is a valid post ID (TypeScript then treats it as `t3_${string}`)
 //
@@ -113,7 +113,7 @@ api.get('/hot/:subreddit', async (c) => {
 // ROUTE         : GET /api/posts?ids=t3_a,t3_b
 // DESCRIPTION   :
 //   Looks up the current data of saved favourite posts by ID. Invalid IDs
-//   are ignored. Posts Reddit cannot find (e.g. deleted) are listed in
+//   are ignored. Posts Reddit cannot find are listed in
 //   missingIds instead of failing the whole request.
 // RETURNS       :
 //   PostsByIdResponse
@@ -124,7 +124,7 @@ api.get('/posts', async (c) => {
     .filter(isPostId)
     .slice(0, MAX_IDS_PER_REQUEST);
 
-  // allSettled: one deleted post should not break the whole list
+  // one deleted post should not break the whole list
   const results = await Promise.allSettled(ids.map((id) => reddit.getPostById(id)));
 
   const posts: PostSummary[] = [];

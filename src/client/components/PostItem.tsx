@@ -1,6 +1,6 @@
 /*
  * FILE          : PostItem.tsx
- * PROJECT       : Advanced Web Frameworks - Reddit Favourites (Devvit)
+ * PROJECT       : Advanced Web Frameworks - Reddit Favourites
  * PROGRAMMER    : Ritik Vyas
  * FIRST VERSION : 2026-11-05
  * DESCRIPTION   :
@@ -54,7 +54,7 @@ export function PostItem({ post, buttonLabel, onButtonClick, isFavourite }: Post
           <a
             href={commentsUrl}
             onClick={(event) => {
-              event.preventDefault(); // Devvit apps must open links with navigateTo
+              event.preventDefault();
               navigateTo(commentsUrl);
             }}
           >

@@ -1,6 +1,6 @@
 /*
  * FILE          : splash.tsx
- * PROJECT       : Advanced Web Frameworks - Reddit Favourites (Devvit)
+ * PROJECT       : Advanced Web Frameworks - Reddit Favourites
  * PROGRAMMER    : Ritik Vyas
  * FIRST VERSION : 2026-11-05
  * DESCRIPTION   :

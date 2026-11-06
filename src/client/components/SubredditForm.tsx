@@ -1,10 +1,10 @@
 /*
  * FILE          : SubredditForm.tsx
- * PROJECT       : Advanced Web Frameworks - Reddit Favourites (Devvit)
+ * PROJECT       : Advanced Web Frameworks - Reddit Favourites
  * PROGRAMMER    : Ritik Vyas
  * FIRST VERSION : 2026-11-05
  * DESCRIPTION   :
- *   The search form where the user types a subreddit name (Requirement 1).
+ *   The search form where the user types a subreddit name.
  *   It accepts "reactjs", "r/reactjs" or "/r/reactjs" and rejects invalid
  *   names before anything is sent to the server.
  */

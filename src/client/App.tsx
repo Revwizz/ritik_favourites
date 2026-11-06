@@ -1,6 +1,6 @@
 /*
  * FILE          : App.tsx
- * PROJECT       : Advanced Web Frameworks - Reddit Favourites (Devvit)
+ * PROJECT       : Advanced Web Frameworks - Reddit Favourites
  * PROGRAMMER    : Ritik Vyas
  * FIRST VERSION : 2026-11-05
  * DESCRIPTION   :
@@ -73,9 +73,6 @@ export function App() {
               <h2>Hot posts</h2>
             </div>
             <div className="empty">
-              <span className="empty-icon" aria-hidden="true">
-                🔍
-              </span>
               <p className="status">
                 Enter a subreddit above to see its top {HOT_POST_LIMIT} hot posts.
               </p>

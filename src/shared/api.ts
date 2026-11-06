@@ -1,6 +1,6 @@
 /*
  * FILE          : api.ts (src/shared)
- * PROJECT       : Advanced Web Frameworks - Reddit Favourites (Devvit)
+ * PROJECT       : Advanced Web Frameworks - Reddit Favourites
  * PROGRAMMER    : Ritik Vyas
  * FIRST VERSION : 2026-11-05
  * DESCRIPTION   :
@@ -17,7 +17,7 @@ export const SUBREDDIT_NAME_PATTERN = /^[A-Za-z0-9_]{2,21}$/;
 
 // The only post data the client ever receives. It is shown on screen, never stored.
 export type PostSummary = {
-  id: string; // e.g. "t3_1abc2de"
+  id: string;
   title: string;
   score: number;
   permalink: string; // e.g. "/r/reactjs/comments/1abc2de/some_title/"
@@ -36,7 +36,7 @@ export type HotPostsResponse = {
 export type PostsByIdResponse = {
   type: 'posts';
   posts: PostSummary[];
-  missingIds: string[]; // IDs Reddit could not find (e.g. deleted posts)
+  missingIds: string[]; // IDs Reddit could not find
 };
 
 // Response sent by any endpoint when something goes wrong

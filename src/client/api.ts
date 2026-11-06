@@ -1,6 +1,6 @@
 /*
  * FILE          : api.ts (src/client)
- * PROJECT       : Advanced Web Frameworks - Reddit Favourites (Devvit)
+ * PROJECT       : Advanced Web Frameworks - Reddit Favourites
  * PROGRAMMER    : Ritik Vyas
  * FIRST VERSION : 2026-11-05
  * DESCRIPTION   :
@@ -36,7 +36,7 @@ async function getJson<T>(url: string): Promise<T> {
 //
 // FUNCTION      : fetchHotPosts
 // DESCRIPTION   :
-//   Gets the top hot posts of a subreddit (Requirement 1).
+//   Gets the top hot posts of a subreddit.
 // PARAMETERS    :
 //   string subreddit : subreddit name without "r/", e.g. "reactjs"
 // RETURNS       :
@@ -50,9 +50,9 @@ export async function fetchHotPosts(subreddit: string): Promise<PostSummary[]> {
 //
 // FUNCTION      : fetchPostsByIds
 // DESCRIPTION   :
-//   Gets the current data of the saved favourite posts (Requirement 3).
+//   Gets the current data of the saved favourite posts.
 // PARAMETERS    :
-//   string[] ids : post IDs, e.g. ["t3_1abc2de", "t3_1xyz9fg"]
+//   string[] ids : post IDs
 // RETURNS       :
 //   Promise<PostsByIdResponse> : the posts found, plus any missing IDs
 //

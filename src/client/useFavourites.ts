@@ -1,12 +1,12 @@
 /*
  * FILE          : useFavourites.ts
- * PROJECT       : Advanced Web Frameworks - Reddit Favourites (Devvit)
+ * PROJECT       : Advanced Web Frameworks - Reddit Favourites
  * PROGRAMMER    : Ritik Vyas
  * FIRST VERSION : 2026-11-05
  * DESCRIPTION   :
  *   A custom React hook that keeps the list of favourite post IDs and saves
- *   it with the Web Storage API (localStorage) every time it changes
- *   (Requirement 4). Only post IDs are stored, never any other post data.
+ *   it with the Web Storage API (localStorage) every time it changes.
+ *   Only post IDs are stored, never any other post data.
  */
 
 import { useEffect, useState } from 'react';
@@ -70,7 +70,7 @@ export function useFavourites() {
 
   //
   // FUNCTION      : addFavourite
-  // DESCRIPTION   : Adds a post ID to the favourites (ignored if already there).
+  // DESCRIPTION   : Adds a post ID to the favourites.
   // PARAMETERS    :
   //   string id : the post ID
   // RETURNS       :
