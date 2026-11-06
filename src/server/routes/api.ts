@@ -1,5 +1,19 @@
+/*
+ * FILE          : api.ts (src/server/routes)
+ * PROJECT       : Advanced Web Frameworks - Reddit Favourites (Devvit)
+ * PROGRAMMER    : Ritik Vyas
+ * FIRST VERSION : 2026-11-05
+ * DESCRIPTION   :
+ *   The server endpoints called by the React client. They run on Devvit's
+ *   server and read post data from the Reddit API through Devvit's Reddit
+ *   client. They only read from Reddit; nothing is stored on the server.
+ *     GET /api/hot/:subreddit   - top hot posts of a subreddit (Requirement 1)
+ *     GET /api/posts?ids=...    - current data for saved post IDs (Requirement 3)
+ */
+
 import { Hono } from 'hono';
 import { reddit } from '@devvit/web/server';
+import { HOT_POST_LIMIT, SUBREDDIT_NAME_PATTERN } from '../../shared/api';
 import type {
   ErrorResponse,
   HotPostsResponse,
@@ -7,16 +21,43 @@ import type {
   PostSummary,
 } from '../../shared/api';
 
+// Reddit post IDs: "t3_" followed by a short base-36 ID
+const POST_ID_PATTERN = /^t3_[a-z0-9]{1,12}$/;
+
+// Most IDs looked up in a single request, to keep requests small
+const MAX_IDS_PER_REQUEST = 100;
+
+// HTTP status codes used below
+const HTTP_BAD_REQUEST = 400;
+const HTTP_NOT_FOUND = 404;
+
 export const api = new Hono();
 
-const SUBREDDIT_NAME = /^[A-Za-z0-9_]{2,21}$/;
-
-// Post IDs look like "t3_1abc2de"
+//
+// FUNCTION      : isPostId
+// DESCRIPTION   :
+//   Checks that a string is a valid Reddit post ID, so only well-formed IDs
+//   are sent to the Reddit API.
+// PARAMETERS    :
+//   string id : the value to check, e.g. "t3_1abc2de"
+// RETURNS       :
+//   boolean : true if id is a valid post ID (TypeScript then treats it as `t3_${string}`)
+//
 function isPostId(id: string): id is `t3_${string}` {
-  return /^t3_[a-z0-9]{1,12}$/.test(id);
+  return POST_ID_PATTERN.test(id);
 }
 
-// Copy only the fields the app displays out of Devvit's Post object
+//
+// FUNCTION      : toSummary
+// DESCRIPTION   :
+//   Copies only the fields the app displays out of Devvit's Post object, so
+//   the client never receives the full post data.
+// PARAMETERS    :
+//   PostSummary post : a Devvit Post (or any object with these fields)
+// RETURNS       :
+//   PostSummary : a plain object with id, title, score, permalink,
+//                 subredditName and numberOfComments
+//
 function toSummary(post: PostSummary): PostSummary {
   return {
     id: post.id,
@@ -28,21 +69,28 @@ function toSummary(post: PostSummary): PostSummary {
   };
 }
 
-// Requirement 1: top 10 "hot" posts of any subreddit
+//
+// ROUTE         : GET /api/hot/:subreddit
+// DESCRIPTION   :
+//   Returns the top HOT_POST_LIMIT posts of a subreddit, sorted by "hot".
+//   Responds 400 for an invalid name and 404 if Reddit cannot load it.
+// RETURNS       :
+//   HotPostsResponse on success, ErrorResponse on failure
+//
 api.get('/hot/:subreddit', async (c) => {
   const subreddit = c.req.param('subreddit');
 
-  if (!SUBREDDIT_NAME.test(subreddit)) {
+  if (!SUBREDDIT_NAME_PATTERN.test(subreddit)) {
     return c.json<ErrorResponse>(
       { status: 'error', message: 'That is not a valid subreddit name.' },
-      400
+      HTTP_BAD_REQUEST
     );
   }
 
   try {
     const posts = await reddit
-      .getHotPosts({ subredditName: subreddit, limit: 10, pageSize: 10 })
-      .get(10);
+      .getHotPosts({ subredditName: subreddit, limit: HOT_POST_LIMIT, pageSize: HOT_POST_LIMIT })
+      .get(HOT_POST_LIMIT);
 
     return c.json<HotPostsResponse>({
       type: 'hot',
@@ -56,14 +104,25 @@ api.get('/hot/:subreddit', async (c) => {
         status: 'error',
         message: `Could not load r/${subreddit}. Check the name and that the subreddit is public.`,
       },
-      404
+      HTTP_NOT_FOUND
     );
   }
 });
 
-// Requirement 3: look up posts from the saved IDs
+//
+// ROUTE         : GET /api/posts?ids=t3_a,t3_b
+// DESCRIPTION   :
+//   Looks up the current data of saved favourite posts by ID. Invalid IDs
+//   are ignored. Posts Reddit cannot find (e.g. deleted) are listed in
+//   missingIds instead of failing the whole request.
+// RETURNS       :
+//   PostsByIdResponse
+//
 api.get('/posts', async (c) => {
-  const ids = (c.req.query('ids') ?? '').split(',').filter(isPostId).slice(0, 100);
+  const ids = (c.req.query('ids') ?? '')
+    .split(',')
+    .filter(isPostId)
+    .slice(0, MAX_IDS_PER_REQUEST);
 
   // allSettled: one deleted post should not break the whole list
   const results = await Promise.allSettled(ids.map((id) => reddit.getPostById(id)));
@@ -76,7 +135,9 @@ api.get('/posts', async (c) => {
       posts.push(toSummary(result.value));
     } else {
       const id = ids[index];
-      if (id) missingIds.push(id);
+      if (id) {
+        missingIds.push(id);
+      }
     }
   });
 

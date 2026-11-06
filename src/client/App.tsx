@@ -1,14 +1,44 @@
+/*
+ * FILE          : App.tsx
+ * PROJECT       : Advanced Web Frameworks - Reddit Favourites (Devvit)
+ * PROGRAMMER    : Ritik Vyas
+ * FIRST VERSION : 2026-11-05
+ * DESCRIPTION   :
+ *   The top-level component of the full app. It owns the favourites state
+ *   (through useFavourites) because both the hot posts list and the
+ *   favourites list need it, and lays out the two panels.
+ */
+
 import { useState } from 'react';
+import { HOT_POST_LIMIT } from '../shared/api';
 import { FavouritesList } from './components/FavouritesList';
 import { SubredditForm } from './components/SubredditForm';
 import { SubredditPosts } from './components/SubredditPosts';
 import { useFavourites } from './useFavourites';
 
+//
+// FUNCTION      : App
+// DESCRIPTION   :
+//   React component for the whole app: header, search form, hot posts
+//   panel and favourites panel.
+// PARAMETERS    :
+//   none
+// RETURNS       :
+//   JSX.Element : the app
+//
 export function App() {
   const [subreddit, setSubreddit] = useState('');
   const { favouriteIds, isFavourite, addFavourite, removeFavourite } = useFavourites();
 
-  function toggleFavourite(id: string) {
+  //
+  // FUNCTION      : toggleFavourite
+  // DESCRIPTION   : Adds a post to the favourites, or removes it if already there.
+  // PARAMETERS    :
+  //   string id : the post ID
+  // RETURNS       :
+  //   void
+  //
+  function toggleFavourite(id: string): void {
     if (isFavourite(id)) {
       removeFavourite(id);
     } else {
@@ -18,9 +48,14 @@ export function App() {
 
   return (
     <div className="app">
-      <header>
-        <h1>Reddit Favourites</h1>
-        <p>Find a subreddit, star the posts you like, and they’ll be here next time.</p>
+      <header className="app-header">
+        <span className="logo" aria-hidden="true">
+          ★
+        </span>
+        <div>
+          <h1>Reddit Favourites</h1>
+          <p>Find a subreddit, star the posts you like, and they’ll be here next time.</p>
+        </div>
       </header>
 
       <SubredditForm onSearch={setSubreddit} />
@@ -34,8 +69,17 @@ export function App() {
           />
         ) : (
           <section className="panel">
-            <h2>Hot posts</h2>
-            <p className="status">Enter a subreddit above to see its top 10 hot posts.</p>
+            <div className="panel-header">
+              <h2>Hot posts</h2>
+            </div>
+            <div className="empty">
+              <span className="empty-icon" aria-hidden="true">
+                🔍
+              </span>
+              <p className="status">
+                Enter a subreddit above to see its top {HOT_POST_LIMIT} hot posts.
+              </p>
+            </div>
           </section>
         )}
 
